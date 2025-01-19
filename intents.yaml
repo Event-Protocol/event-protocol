@@ -1,0 +1,8 @@
+intents:
+  - name: NotifyLight
+    trigger:
+      event: Transfer
+      token: "0x1234567890abcdef1234567890abcdef12345678"
+    actions:
+      - device: Light
+        state: "on"
