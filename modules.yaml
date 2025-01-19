@@ -1,0 +1,8 @@
+modules:
+  - name: raspberry_pico
+    module: src.raspberry_pico_module
+    class: RaspberryPicoModule
+
+  - name: google_home
+    module: src.google_home_module
+    class: GoogleHomeModule

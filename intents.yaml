@@ -1,8 +1,7 @@
 intents:
-  - name: NotifyLight
+  - name: TestRaspberryPico
     trigger:
-      event: Transfer
-      token: "0x1234567890abcdef1234567890abcdef12345678"
+      event: TestEvent
     actions:
-      - device: Light
+      - device: raspberry_pico
         state: "on"

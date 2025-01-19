@@ -8,7 +8,7 @@ bitarray==3.0.0
 certifi==2024.12.14
 charset-normalizer==3.4.1
 ckzg==2.0.1
-colorzero==2.0.0
+colorzero==2.0
 cytoolz==1.0.1
 eth-account==0.13.4
 eth-hash==0.7.1
@@ -28,6 +28,7 @@ propcache==0.2.1
 pycryptodome==3.21.0
 pydantic==2.10.5
 pydantic_core==2.27.2
+python-dotenv==1.0.1
 pyunormalize==16.0.0
 PyYAML==6.0.2
 regex==2024.11.6
