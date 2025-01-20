@@ -1,8 +1,10 @@
 modules:
-  - name: raspberry_pico
-    module: src.raspberry_pico_module
-    class: RaspberryPicoModule
+  raspberry_pi:
+    module: src.devices.raspberry_pi
+    class: RaspberryPi
+    pin: 17
 
-  - name: google_home
-    module: src.google_home_module
-    class: GoogleHomeModule
+google_home:
+  module: src.devices.google_home
+  class: GoogleHome
+  ip: "192.168.1.100"

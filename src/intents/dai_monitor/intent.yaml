@@ -1,0 +1,8 @@
+name: DAIMonitor
+module: dai_monitor
+trigger:
+  event: Transfer
+  contract_address: "dynamic"
+actions:
+  - device: raspberry_pi
+    state: "on"
