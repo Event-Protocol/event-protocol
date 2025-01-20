@@ -1,7 +1,8 @@
 intents:
-  - name: TestRaspberryPico
-    trigger:
-      event: TestEvent
-    actions:
-      - device: raspberry_pico
-        state: "on"
+- actions:
+  - device: raspberry_pico
+    state: 'on'
+  name: DAIMonitor
+  trigger:
+    contract_address: '0xFF34B3d4Aee8ddCd6F9AFFFB6Fe49bD371b8a357'
+    event: Transfer
