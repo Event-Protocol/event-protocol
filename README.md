@@ -1,222 +1,195 @@
-# Welcome to The Event Protocol
+# The Event Protocol
 
-**The Event Protocol** is a groundbreaking initiative focused on bridging the gap between blockchain events and real-world actions. We are building a modular, developer-friendly platform that enables seamless integration between blockchain technology and IoT devices, APIs, and AI-driven systems.
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Python](https://img.shields.io/badge/python-3.8%2B-blue)
+![Status](https://img.shields.io/badge/status-alpha-orange)
 
----
+The Event Protocol is a modular, developer-friendly platform that bridges blockchain events with real-world actions through IoT devices and APIs. By connecting on-chain activity to physical devices and digital services, we enable a new generation of decentralized automation.
 
-## 🌟 Vision
+## 🌟 Core Features
 
-Our mission is to revolutionize how blockchain interacts with the physical world by creating a robust and flexible protocol that empowers developers, drives innovation, and opens up new possibilities in automation, supply chain management, gaming, environmental monitoring, and beyond.
+- **Event Monitoring**: Listen to any on-chain event (transfers, governance, custom contracts)
+- **Modular Architecture**: Easy-to-extend system for adding new devices and event handlers
+- **Multi-Chain Support**: Compatible with Ethereum, Optimism, Polygon, and other EVM chains
+- **Device Integrations**: Support for IoT devices like Raspberry Pi, Google Home, and more
+- **Developer-First**: Simple YAML configurations and intuitive Python interfaces
 
----
+## 🚀 Quick Start
 
-## 🚀 Key Features
+### Prerequisites
 
-- **Event Triggers:** Real-time monitoring of on-chain events like token transfers, governance decisions, and custom smart contract events.
-- **Modular Actions:** Support for triggering IoT device actions, API calls, and AI-driven processes.
-- **Multi-Chain Compatibility:** Seamless integration with Ethereum, Optimism, Polygon, and other EVM-compatible chains.
-- **Developer Tools:** Intuitive YAML/JSON workflow definitions, SDKs, and comprehensive documentation.
-- **Scalable and Secure Architecture:** Designed to handle real-world applications with robust security measures and low-latency processing.
+- Python 3.8 or higher
+- pip (Python package installer)
+- An Ethereum node URL (e.g., Infura endpoint)
+- Etherscan API key for ABI fetching
 
----
+### Installation
 
-## 📚 Documentation
-
-Find the full documentation, guides, and resources in our [documentation repository](#). Learn how to:
-
-- Set up the Event Protocol.
-- Define workflows using YAML/JSON.
-- Integrate your IoT devices and APIs.
-
----
-
-## 🛠️ Getting Started
-
-### 1. Prerequisites
-
-- Python 3.10 or later
-- Virtual environment (recommended)
-- `pip` package manager
-- For Raspberry Pi integrations: GPIO libraries (use mock factory for non-Raspberry Pi environments).
-
-### 2. Clone the Repository
-
+1. Clone the repository:
 ```bash
-git clone https://github.com/your-repo/event-protocol.git
+git clone https://github.com/yourusername/event-protocol.git
 cd event-protocol
 ```
 
-### 3. Set Up the Virtual Environment
-
-```bash
-python3 -m venv eventp
-source eventp/bin/activate
-```
-
-### 4. Install Dependencies
-
+2. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-### 5. Set Up Environment Variables
-
-Create a `.env` file in the project root:
-
-```plaintext
-INFURA_URL=<your_infura_url>
-ETHERSCAN_API_KEY=<your_etherscan_api_key>
+3. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your credentials:
+# INFURA_URL=your_infura_url
+# ETHERSCAN_API_KEY=your_etherscan_key
 ```
 
-### 6. Define Intents and Modules
+### Basic Usage
 
-#### Example `intents.yaml`
-
-```yaml
-intents:
-  - name: TestRaspberryPico
-    trigger:
-      event: TestEvent
-    actions:
-      - device: raspberry_pico
-        state: "on"
-  - name: TestGoogleHome
-    trigger:
-      event: TestEvent
-    actions:
-      - device: google_home
-        command: "turn on the lights"
+1. Run the test runner:
+```bash
+python tests/test_runner.py
 ```
 
-#### Example `modules.yaml`
+2. Enter the contract address when prompted
+3. Select an event to monitor
+4. Watch as blockchain events trigger your configured actions!
+
+## 🏗️ Architecture
+
+The Event Protocol follows a modular, plugin-based architecture:
+
+### Core Components
+
+- **Intent Engine**: Manages event detection and routing
+- **Device Manager**: Handles device registration and action execution
+- **Base Intent**: Template class for creating new event handlers
+- **Device Modules**: Pluggable device integrations
+
+### Project Structure
+```
+event-protocol/
+├── src/
+│   ├── base_intent.py        # Base class for intents
+│   ├── devices/              # Device integrations
+│   │   ├── raspberry_pi.py
+│   │   ├── google_home.py
+│   ├── intents/             # Event handlers
+│   │   ├── dai_monitor/     
+│   │   │   ├── dai_monitor.py
+│   │   │   ├── intent.yaml
+│   ├── intent_engine.py     # Core event processing
+│   ├── device_manager.py    # Device orchestration
+├── modules.yaml             # Device configuration
+├── tests/
+    └── test_runner.py       # Test harness
+```
+
+## 📚 Creating Your Own Modules
+
+### Creating a New Device
+
+1. Create a new Python file in `src/devices/`:
+
+```python
+class MyDevice:
+    def __init__(self, config):
+        self.config = config
+        # Initialize device-specific settings
+
+    def execute(self, action):
+        # Implement device-specific action logic
+        print(f"Executing action: {action}")
+```
+
+2. Add device configuration to `modules.yaml`:
 
 ```yaml
 modules:
-  - name: raspberry_pico
-    module: src.raspberry_pico_module
-    class: RaspberryPicoModule
-
-  - name: google_home
-    module: src.google_home_module
-    class: GoogleHomeModule
+  my_device:
+    module: src.devices.my_device
+    class: MyDevice
+    config:
+      # Device-specific configuration
 ```
 
----
+### Creating a New Intent
 
-## 🛠️ Extending the Protocol
-
-### Adding a Device Module
-
-1. **Create a New Module File**:
-   - Add a Python file in `src/` for the new device, e.g., `src/new_device_module.py`.
-
-2. **Inherit from `ActionModule`**:
-
-   ```python
-   from src.action_module import ActionModule
-
-   class NewDeviceModule(ActionModule):
-       def execute(self, action):
-           # Implement device-specific logic here
-           print(f"Executing action for NewDevice: {action}")
-   ```
-
-3. **Register the Module**:
-   - Add the new module to `modules.yaml`:
-
-   ```yaml
-   - name: new_device
-     module: src.new_device_module
-     class: NewDeviceModule
-   ```
-
-4. **Update Intents**:
-   - Define intents in `intents.yaml` to include actions for the new device.
-
-### Integrating with On-Chain Actions
-
-1. **Define the Blockchain Trigger**:
-   - Update `intents.yaml` with a trigger for a blockchain event:
-
-   ```yaml
-   intents:
-     - name: NotifyLightOnTransfer
-       trigger:
-         event: Transfer
-         contract_address: "0x1234567890abcdef1234567890abcdef12345678"
-       actions:
-         - device: raspberry_pico
-           state: "on"
-   ```
-
-2. **Monitor Blockchain Events**:
-   - Use the dynamic ABI fetching and event listener in `intent_engine.py` to handle the event.
-
-3. **Execute the Action**:
-   - The system automatically routes the trigger to the corresponding device module.
-
----
-
-## 🌍 Use Cases
-
-- **IoT Automation:** Control smart devices based on token ownership or transfers.
-- **Supply Chain:** Automate quality control and shipment tracking with blockchain transactions.
-- **Gaming:** Trigger real-world props or rewards based on on-chain achievements.
-- **Environmental Impact:** Deploy devices for monitoring and automation based on sustainability milestones.
-
----
-
-## 🧪 Testing the System
-
-### Unit Tests
-
-Run all unit tests:
-
+1. Create a new directory in `src/intents/`:
 ```bash
-pytest tests/
+mkdir src/intents/my_intent
 ```
 
-### Mock Testing with GPIO
+2. Create `intent.yaml`:
+```yaml
+name: MyIntent
+module: my_intent
+trigger:
+  event: Transfer
+  contract_address: "dynamic"
+actions:
+  - device: my_device
+    state: "on"
+```
 
-Use the `MockFactory` in `raspberry_pico_module.py` to simulate GPIO behavior for testing on non-Raspberry Pi environments.
+3. Create the intent handler:
+```python
+from src.base_intent import BaseIntent
+
+class MyIntent(BaseIntent):
+    def process_event(self, event):
+        # Process the blockchain event
+        actions = self.intent_config["actions"]
+        for action in actions:
+            device_name = action["device"]
+            self.device_manager.execute_action(device_name, action)
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how you can help:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+
+- Follow PEP 8 style guide
+- Add unit tests for new features
+- Update documentation as needed
+- Keep modules focused and single-purpose
+- Use meaningful commit messages
+
+## 📖 Documentation
+
+For detailed documentation, visit our [documentation site](https://docs.eventprotocol.io).
+
+Key documentation sections:
+- [Architecture Overview](https://docs.eventprotocol.io/architecture)
+- [Device Integration Guide](https://docs.eventprotocol.io/devices)
+- [Intent Creation Tutorial](https://docs.eventprotocol.io/intents)
+- [API Reference](https://docs.eventprotocol.io/api)
+
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with ❤️ by the Event Protocol team
+- Thanks to our amazing contributors
+- Inspired by the blockchain and IoT communities
+
+## 🤔 Questions?
+
+- Check out our [FAQ](https://docs.eventprotocol.io/faq)
+- Join our [Discord](https://discord.gg/eventprotocol)
+- Open an [Issue](https://github.com/yourusername/event-protocol/issues)
 
 ---
 
-## 🤝 Contribution Guidelines
-
-We welcome contributions from developers, researchers, and enthusiasts. To get started:
-
-1. Fork the repository.
-2. Make your changes in a feature branch.
-3. Submit a pull request with a detailed description of your changes.
-4. Review our [contribution guidelines](https://github.com/Event-Protocol/.github/blob/main/contribution_guideline.md) for more details.
-
----
-
-## 📅 Roadmap
-
-We’re working hard to deliver the following milestones:
-
-1. **MVP Development:** A Node.js prototype that listens for blockchain events and triggers IoT actions.
-2. **Middleware Expansion:** Scalable event processing with AI integration.
-3. **Developer Ecosystem:** SDKs, templates, and video tutorials.
-4. **Decentralization:** Community-driven governance and incentive mechanisms.
-
----
-
-## 📚 Additional Resources
-
-Find the full documentation, guides, and resources in our [documentation repository](#).
-
----
-
-## 💡 Inspiration
-
-By contributing to The Event Protocol, you can play a key role in building a future where decentralized technology drives practical, secure, and innovative solutions. Together, we can create systems that enhance everyday life and inspire new possibilities for collaboration and growth.
-
----
-
-## License
-
-This project is licensed under the MIT License. See `LICENSE` for details.
-
+Built with 🌟 by the blockchain community, for the blockchain community.
